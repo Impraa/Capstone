@@ -17,6 +17,10 @@ const Navigation = () => {
             {" "}
             Shop{" "}
           </Link>
+          <Link to="/auth" className="nav-link">
+            {" "}
+            Sign in{" "}
+          </Link>
         </div>
       </div>
       <Outlet />
