@@ -4,9 +4,10 @@ import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  User,
+  signOut,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,52 +39,70 @@ export const signInWithGooglePopup = () =>
 
 export const db = getFirestore();
 
+export type AdditionalInformation = {
+  displayName?: string;
+};
+
 export const createUser = async (
-  userAuth: UserCredential,
-  additionalInfo: { displayName?: string }
+  userAuth: User,
+  additionalInfo: AdditionalInformation
 ) => {
   if (!userAuth) return;
 
-  const userDocRef = doc(db, "users", userAuth.user.uid);
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   const userData = await getDoc(userDocRef);
 
   if (!userData.exists()) {
-    const { displayName, email } = userAuth.user;
+    const { displayName, email } = userAuth;
     const createdAt = new Date();
 
     try {
-      if (displayName === null) {
-        await setDoc(userDocRef, {
-          email,
-          createdAt,
-          ...additionalInfo,
-        });
-      } else {
-        await setDoc(userDocRef, {
-          displayName,
-          email,
-          createdAt,
-        });
-      }
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalInfo,
+      });
     } catch (error) {
       console.log("Error creating the user", (error as Error).message);
+    }
+  } else {
+    // If the user already exists in the database, update the displayName property
+    const { email } = userAuth;
+    const { displayName } = additionalInfo;
+    try {
+      await setDoc(
+        userDocRef,
+        {
+          displayName,
+          email,
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      console.log("Error updating the user", (error as Error).message);
     }
   }
 
   return userDocRef;
 };
 
-export const createUserWithInfo = async (
-  email: string,
-  password: string
-): Promise<UserCredential> => {
+export const createUserWithInfo = async (email: string, password: string) => {
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signInUserWithInfo = async (
-  email: string,
-  password: string
-): Promise<UserCredential> => {
-  return await signInWithEmailAndPassword(auth, email, password);
+export const signInUserWithInfo = async (email: string, password: string) => {
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  const userDocRef = doc(db, "users", userCredential.user.uid);
+  const userDoc = await getDoc(userDocRef);
+  const userData = userDoc.data();
+  const user = { ...userCredential.user, displayName: userData?.displayName };
+  return { user, credential: userCredential };
 };
+
+export const signOutUser = async () => await signOut(auth);

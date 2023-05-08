@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createUserWithInfo, createUser } from "../../utils/Firebase/firebase";
 import { UserCredential } from "firebase/auth";
 import FormField from "../FormField/FormField";
 import "./SignUp.scss";
 import Button from "../Button/Button";
+import { UserContext } from "../../contexts/UserContext";
 
 interface formDataInter {
   displayName: string;
@@ -19,6 +20,8 @@ function SignUp() {
     password: "",
     confirmPassword: "",
   });
+
+  const { setUser } = useContext(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,7 +43,10 @@ function SignUp() {
         formData.email,
         formData.password
       );
-      await createUser(response, { displayName: formData.displayName });
+      await createUser(response.user, { displayName: formData.displayName });
+
+      setUser(response.user);
+
       setFormData({
         displayName: "",
         email: "",

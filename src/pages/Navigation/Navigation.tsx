@@ -1,11 +1,21 @@
 /// <reference types="vite-plugin-svgr/client" />
 import "./Navigation.scss";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
 
 import { ReactComponent as CrownLogo } from "../../assets/crown.svg";
+import { UserContext } from "../../contexts/UserContext";
+import { signOutUser } from "../../utils/Firebase/firebase";
 
 const Navigation = () => {
+  const { user, setUser } = useContext(UserContext);
+
+  const signOutHandler = async () => {
+    await signOutUser();
+    setUser(null);
+  };
+
+  console.log(user);
   return (
     <Fragment>
       <div className="navigation">
@@ -17,10 +27,21 @@ const Navigation = () => {
             {" "}
             Shop{" "}
           </Link>
-          <Link to="/auth" className="nav-link">
-            {" "}
-            Sign in{" "}
-          </Link>
+          {user ? (
+            <span
+              className="nav-link"
+              onClick={() => {
+                signOutHandler();
+              }}
+            >
+              Sign out
+            </span>
+          ) : (
+            <Link to="/auth" className="nav-link">
+              {" "}
+              Sign in{" "}
+            </Link>
+          )}
         </div>
       </div>
       <Outlet />
