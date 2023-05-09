@@ -1,5 +1,9 @@
 import { User } from "firebase/auth";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
+import {
+  createUser,
+  onAuthStateChangedListner,
+} from "../utils/Firebase/firebase";
 
 type UserContextValue = {
   user: User | null;
@@ -23,6 +27,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     () => ({ user, setUser }),
     [user]
   );
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListner((user) => {
+      if (user) {
+        createUser(user, {});
+      }
+      setUser(user);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

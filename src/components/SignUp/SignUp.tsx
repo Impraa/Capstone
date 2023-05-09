@@ -21,8 +21,6 @@ function SignUp() {
     confirmPassword: "",
   });
 
-  const { setUser } = useContext(UserContext);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -44,8 +42,6 @@ function SignUp() {
         formData.password
       );
       await createUser(response.user, { displayName: formData.displayName });
-
-      setUser(response.user);
 
       setFormData({
         displayName: "",

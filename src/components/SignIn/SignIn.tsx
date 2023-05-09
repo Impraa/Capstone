@@ -1,15 +1,12 @@
-import { UserCredential } from "firebase/auth";
 import {
   signInWithGooglePopup,
-  createUser,
   signInUserWithInfo,
 } from "../../utils/Firebase/firebase";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import FormField from "../FormField/FormField";
 import "./SignIn.scss";
 import Button from "../Button/Button";
 import React from "react";
-import { UserContext } from "../../contexts/UserContext";
 
 interface formDataInter {
   email: string;
@@ -17,8 +14,7 @@ interface formDataInter {
 }
 
 const logUserWithGoogle = async () => {
-  const response: UserCredential = await signInWithGooglePopup();
-  const userDocRef = await createUser(response.user, {});
+  await signInWithGooglePopup();
 };
 
 function SignIn() {
@@ -26,8 +22,6 @@ function SignIn() {
     email: "",
     password: "",
   });
-
-  const { setUser } = useContext(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,7 +41,6 @@ function SignIn() {
         formData.email,
         formData.password
       );
-      setUser(response.user);
       console.log(response.user);
       setFormData({
         email: "",

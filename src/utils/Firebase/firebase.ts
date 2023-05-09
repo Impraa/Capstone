@@ -8,6 +8,8 @@ import {
   signInWithEmailAndPassword,
   User,
   signOut,
+  onAuthStateChanged,
+  NextOrObserver,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -106,3 +108,6 @@ export const signInUserWithInfo = async (email: string, password: string) => {
 };
 
 export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListner = (callback: NextOrObserver<User>) =>
+  onAuthStateChanged(auth, callback);
