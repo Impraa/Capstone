@@ -3,14 +3,7 @@ import "./App.css";
 import Home from "./pages/Home/Home";
 import Navigation from "./pages/Navigation/Navigation";
 import Authentication from "./pages/Authentication/Authentication";
-
-const Shop = () => {
-  return (
-    <div>
-      <h1>I am the shop page</h1>
-    </div>
-  );
-};
+import Shop from "./pages/Shop/Shop";
 
 function App() {
   return (
