@@ -1,10 +1,11 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import ShopData from "../shop-data.json";
 export interface ProductInter {
   id: number;
   name: string;
   imageUrl: string;
   price: number;
+  quantity?: number;
 }
 
 type ProductContextValue = {

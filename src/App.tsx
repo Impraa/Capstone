@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import Navigation from "./pages/Navigation/Navigation";
 import Authentication from "./pages/Authentication/Authentication";
 import Shop from "./pages/Shop/Shop";
+import Checkout from "./pages/Checkout/Checkout";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="shop" element={<Shop />} />
         <Route path="auth" element={<Authentication />} />
+        <Route path="checkout" element={<Checkout />} />
       </Route>
     </Routes>
   );
