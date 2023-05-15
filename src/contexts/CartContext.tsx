@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { ProductInter } from "./ProductContext";
+import { ProductInter } from "./CategoriesContext";
 
 interface CartContextInter {
   isOpened: boolean;
@@ -18,12 +18,12 @@ export const CartContext = createContext<CartContextInter>({
   setIsOpened: () => {},
   cartItems: [],
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  addItemToCart: (cartItem: ProductInter) => {},
+  addItemToCart: () => {},
   cartCount: 0,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  removeItemFromCart: (cartItem: ProductInter) => {},
+  removeItemFromCart: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  clearItemFromCart: (cartItem: ProductInter) => {},
+  clearItemFromCart: () => {},
   cartTotal: 0,
 });
 

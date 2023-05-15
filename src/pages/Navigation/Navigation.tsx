@@ -1,7 +1,13 @@
 /// <reference types="vite-plugin-svgr/client" />
-import "./Navigation.scss";
+import {
+  LogoContainer,
+  NavLink,
+  NavLinksContainer,
+  NavigationContainer,
+  SignOutLink,
+} from "./Navigation.styles";
 import { Fragment, useContext } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import { ReactComponent as CrownLogo } from "../../assets/crown.svg";
 import { UserContext } from "../../contexts/UserContext";
@@ -16,34 +22,27 @@ const Navigation = () => {
   console.log(user);
   return (
     <Fragment>
-      <div className="navigation">
-        <Link className="logo-container" to="/">
+      <NavigationContainer>
+        <LogoContainer to="/">
           <CrownLogo className="logo" />
-        </Link>
-        <div className="nav-links-container">
-          <Link to="/shop" className="nav-link">
-            {" "}
-            Shop{" "}
-          </Link>
+        </LogoContainer>
+        <NavLinksContainer>
+          <NavLink to="/shop"> Shop </NavLink>
           {user ? (
-            <span
-              className="nav-link"
+            <SignOutLink
               onClick={() => {
                 signOutUser();
               }}
             >
               Sign out
-            </span>
+            </SignOutLink>
           ) : (
-            <Link to="/auth" className="nav-link">
-              {" "}
-              Sign in{" "}
-            </Link>
+            <NavLink to="/auth"> Sign in </NavLink>
           )}
           <CartIcon />
-        </div>
+        </NavLinksContainer>
         {isOpened && <CartDropdown />}
-      </div>
+      </NavigationContainer>
       <Outlet />
     </Fragment>
   );

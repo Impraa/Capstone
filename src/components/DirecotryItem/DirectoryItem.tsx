@@ -1,4 +1,4 @@
-import "./categoryItem.scss";
+import "./DirectoryItem.scss";
 
 interface CategoryInter {
   id: number;
@@ -6,16 +6,16 @@ interface CategoryInter {
   imageUrl: string;
 }
 
-function CategoryItem(props: CategoryInter) {
+function DirectoryItem(props: CategoryInter) {
   const { id, imageUrl, title } = props;
 
   return (
-    <div key={id} className="category-container">
+    <div key={id} className="directory-item-container">
       <div
         className="background-image"
         style={{ backgroundImage: `url(${imageUrl})` }}
       />
-      <div className="category-body-container">
+      <div className="body">
         <h2>{title}</h2>
         <p>Shop now</p>
       </div>
@@ -23,4 +23,4 @@ function CategoryItem(props: CategoryInter) {
   );
 }
 
-export default CategoryItem;
+export default DirectoryItem;

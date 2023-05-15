@@ -1,4 +1,4 @@
-import CategoryItem from "../CategoryItem/CategoryItem";
+import DirectoryItem from "../DirecotryItem/DirectoryItem";
 import "./Categories.scss";
 
 interface CategoryInter {
@@ -39,7 +39,7 @@ function Categories() {
   return (
     <div className="categories-container">
       {categories.map((category: CategoryInter) => {
-        return <CategoryItem key={category.id} {...category} />;
+        return <DirectoryItem key={category.id} {...category} />;
       })}
     </div>
   );

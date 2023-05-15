@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
-import { ProductInter } from "../../contexts/ProductContext";
+import { ProductInter } from "../../contexts/CategoriesContext";
 import "./CheckoutItem.scss";
 
 function CheckoutItem(props: ProductInter) {
