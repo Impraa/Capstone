@@ -19,7 +19,6 @@ import { CartContext } from "../../contexts/CartContext";
 const Navigation = () => {
   const { user } = useContext(UserContext);
   const { isOpened } = useContext(CartContext);
-  console.log(user);
   return (
     <Fragment>
       <NavigationContainer>

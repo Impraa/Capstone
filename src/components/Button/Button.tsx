@@ -1,4 +1,8 @@
-import "./Button.scss";
+import {
+  BaseButton,
+  GoogleSignInButton,
+  InvertedButton,
+} from "./Button.styles";
 interface buttonProps {
   children: string;
   buttonType: string;
@@ -16,7 +20,7 @@ interface buttonProps {
 
 function Button({ children, buttonType, onClick, ...properties }: buttonProps) {
   return (
-    <button
+    /*  <button
       className={`button-container ${
         buttonType === "google"
           ? "google-sign-in"
@@ -28,7 +32,20 @@ function Button({ children, buttonType, onClick, ...properties }: buttonProps) {
       {...properties.properties}
     >
       {children}
-    </button>
+    </button> */
+    buttonType === "google" ? (
+      <GoogleSignInButton onClick={onClick} {...properties.properties}>
+        {children}
+      </GoogleSignInButton>
+    ) : buttonType === "default" ? (
+      <BaseButton onClick={onClick} {...properties.properties}>
+        {children}
+      </BaseButton>
+    ) : (
+      <InvertedButton onClick={onClick} {...properties.properties}>
+        {children}
+      </InvertedButton>
+    )
   );
 }
 
