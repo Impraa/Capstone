@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { ProductInter } from "./CategoriesContext";
 
 interface CartContextInter {
@@ -71,40 +77,122 @@ const clearCartItem = (cartItems: ProductInter[], cartItem: ProductInter) => {
   return cartItems.filter((item) => item.id !== cartItem.id);
 };
 
-export default function CartContextProvider({ children }: ChildrenInter) {
-  const [isOpened, setIsOpened] = useState(false);
-  const [cartItems, setCartItems] = useState<ProductInter[]>([]);
-  const [cartCount, setCartCount] = useState<number>(0);
-  const [cartTotal, setCartTotal] = useState<number>(0);
+enum CartActionType {
+  SET_CART_ITEMS = "SET_CART_ITEMS",
+  IS_CART_OPENED = "IS_CART_OPENED",
+}
 
-  useEffect(() => {
-    const newCartCount = cartItems.reduce(
+type CartReducerAction = {
+  type: CartActionType;
+  payload: ReducerValues;
+};
+
+type ReducerValues = {
+  isCartOpen?: boolean;
+  cartItems?: ProductInter[];
+  cartCount?: number;
+  cartTotal?: number;
+};
+
+const INITAL_VALUE: CartContextInter = {
+  isOpened: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setIsOpened: () => {},
+  cartItems: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  addItemToCart: () => {},
+  cartCount: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  removeItemFromCart: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  clearItemFromCart: () => {},
+  cartTotal: 0,
+};
+
+const cartReducer = (state: CartContextInter, action: CartReducerAction) => {
+  const { type, payload } = action; //Beacuse payload stores value of user
+
+  console.log(action);
+  console.log("dispatched");
+  switch (type) {
+    case CartActionType.SET_CART_ITEMS:
+      return {
+        ...state,
+        ...payload, //Everything after override keep previouse state
+      };
+    case CartActionType.IS_CART_OPENED:
+      return {
+        ...state,
+        isOpened: payload.isCartOpen,
+      };
+    default:
+      throw new Error(`Undhandled type ${type} in cartReducer`);
+  }
+};
+
+export default function CartContextProvider({ children }: ChildrenInter) {
+  const [{ cartItems, isOpened, cartCount, cartTotal }, dispatch] = useReducer(
+    cartReducer,
+    INITAL_VALUE as never
+  );
+
+  const updateCartItemsReducer = (newCartItems: ProductInter[]) => {
+    const newCartCount = newCartItems.reduce(
       (total, cartItem) =>
         cartItem.quantity !== undefined ? total + cartItem.quantity : 0,
       0
     );
-    setCartCount(newCartCount);
-    const newCartTotal = cartItems.reduce(
+    const newCartTotal = newCartItems.reduce(
       (total, cartItem) => total + cartItem.price,
       0
     );
-    setCartTotal(newCartTotal);
-  }, [cartItems]);
+    dispatch({
+      type: CartActionType.SET_CART_ITEMS,
+      payload: {
+        cartItems: newCartItems,
+        cartTotal: newCartTotal,
+        cartCount: newCartCount,
+      },
+    });
+  };
 
   const addItemToCart = (cartItem: ProductInter) => {
-    setCartItems(addCartItem(cartItems, cartItem));
+    if (cartItems) {
+      const newCartItems = addCartItem(cartItems, cartItem);
+      updateCartItemsReducer(newCartItems);
+    } else {
+      throw new Error("No cart items");
+    }
   };
 
   const removeItemFromCart = (cartItem: ProductInter) => {
-    setCartItems(removeCartItem(cartItems, cartItem));
+    if (cartItems) {
+      const newCartItems = removeCartItem(cartItems, cartItem);
+      updateCartItemsReducer(newCartItems);
+    } else {
+      throw new Error("No cart items");
+    }
   };
 
   const clearItemFromCart = (cartItem: ProductInter) => {
-    setCartItems(clearCartItem(cartItems, cartItem));
+    if (cartItems) {
+      const newCartItems = clearCartItem(cartItems, cartItem);
+      updateCartItemsReducer(newCartItems);
+    } else {
+      throw new Error("No cart items");
+    }
+  };
+
+  const setIsOpened = (isOpened: boolean) => {
+    dispatch({
+      type: CartActionType.IS_CART_OPENED,
+      payload: { isCartOpen: isOpened },
+    });
   };
 
   const value: CartContextInter = {
     isOpened,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setIsOpened,
     cartItems,
     addItemToCart,
