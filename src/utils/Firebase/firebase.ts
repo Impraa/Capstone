@@ -72,7 +72,9 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce(
+  return querySnapshot.docs.map((docSnapshot) =>
+    docSnapshot.data()
+  ); /* .reduce(
     (acc: any, docSnapshot: any) => {
       const data = docSnapshot.data();
       if (data.title) {
@@ -83,7 +85,7 @@ export const getCategoriesAndDocuments = async () => {
     {}
   );
 
-  return categoryMap;
+  return categoryMap; */
 };
 
 export type AdditionalInformation = {
