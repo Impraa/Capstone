@@ -5,15 +5,20 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import thunk from "redux-thunk";
+import createSagaMiddlware from "redux-saga";
 
 import { rootReducer } from "./root-reducer";
 import { Dispatch, SetStateAction } from "react";
 import { User } from "firebase/auth";
 import { CategoryInter, ProductInter } from "./categories/categories-reducer";
+import { rootSaga } from "./root-saga";
+
+const sagaMiddleware = createSagaMiddlware();
 
 const middleWares = [
   process.env.NODE_ENV === "development" && logger,
   thunk,
+  sagaMiddleware,
 ].filter(Boolean) as [];
 
 const persistConfig = {
@@ -37,6 +42,8 @@ export const store = createStore(
   undefined,
   composedEnhancers
 );
+
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
 

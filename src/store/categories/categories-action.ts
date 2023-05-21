@@ -31,7 +31,7 @@ export const fetchCategoriesFaliure = (error: Error) =>
     error: error,
   });
 
-export const fetchCategoriesAsync = () => async (dispatch: any) => {
+/* export const fetchCategoriesAsync = () => async (dispatch: any) => {
   dispatch(fetchCategoriesStart());
   try {
     const categories = (await getCategoriesAndDocuments()) as CategoryInter[];
@@ -40,4 +40,4 @@ export const fetchCategoriesAsync = () => async (dispatch: any) => {
   } catch (error) {
     dispatch(fetchCategoriesFaliure(error as Error));
   }
-};
+}; */

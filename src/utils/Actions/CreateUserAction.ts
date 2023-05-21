@@ -1,15 +1,11 @@
 import { User } from "firebase/auth";
+import { UserActionType } from "../../store/user/user-types";
 
-enum UserActionType {
-  SET_CURRENT_USER = "SET_CURRENT_USER",
+export interface UserPayloadInter extends User {
+  password: string;
 }
-
-type UserReducerAction = {
-  type: UserActionType;
-  payload: User | null;
-};
 
 export const createUserAction = (
   type: UserActionType,
-  payload: User | null
+  payload: User | null | UserPayloadInter | Error
 ) => ({ type, payload });

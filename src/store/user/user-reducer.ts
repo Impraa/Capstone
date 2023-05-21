@@ -1,21 +1,21 @@
 import { User } from "firebase/auth";
-import { Dispatch, SetStateAction } from "react";
 import { UserActionType } from "./user-types";
 
 type UserContextValue = {
   user: User | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
+  isLoading: boolean;
+  error: Error | null;
 };
 
 type UserReducerAction = {
   type: UserActionType;
-  payload: User | null;
+  payload: User;
 };
 
 const INITAL_STATE: UserContextValue = {
   user: null,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setUser: () => {},
+  isLoading: false,
+  error: null,
 };
 
 export const userReducer = (
@@ -24,11 +24,20 @@ export const userReducer = (
 ) => {
   const { type, payload } = action; //Beacuse payload stores value of user
   switch (type) {
-    case "SET_CURRENT_USER":
+    case UserActionType.SET_CURRENT_USER:
       return {
         ...state, //Everything after override keep previouse state
         user: payload,
       };
+    /*     case UserActionType.SIGN_OUT_SUCCESS:
+      return { ...state, user: null };
+    case UserActionType.SIGN_OUT_FAILED:
+    case UserActionType.SIGN_UP_FAILED:
+    case UserActionType.SIGN_IN_FALIURE:
+      return {
+        ...state,
+        error: payload,
+      }; */
     default:
       return state;
   }
