@@ -1,7 +1,10 @@
-import { CategoryInter } from "../../contexts/CategoriesContext";
+import {
+  CategoriesContextValue,
+  CategoryInter,
+} from "../../store/categories/categories-reducer";
 import { CategoriesActionType } from "../../store/categories/categories-types";
 
 export const createCategoriesAction = (
   type: CategoriesActionType,
-  payload: CategoryInter[]
+  payload: CategoriesContextValue
 ) => ({ type, payload });

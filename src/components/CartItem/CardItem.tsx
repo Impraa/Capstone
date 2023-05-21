@@ -1,4 +1,4 @@
-import { ProductInter } from "../../contexts/CategoriesContext";
+import { ProductInter } from "../../store/categories/categories-reducer";
 import "./CardItem.scss";
 
 function CardItem(props: ProductInter) {

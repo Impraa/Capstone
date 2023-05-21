@@ -1,13 +1,16 @@
 import "./ProductCard.scss";
 
 import Button from "../Button/Button";
-import { ProductInter } from "../../contexts/CategoriesContext";
-import { useContext } from "react";
-import { CartContext } from "../../contexts/CartContext";
+
+import { ProductInter } from "../../store/categories/categories-reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCartItems } from "../../store/cart/cart-selector";
+import { addItemToCart } from "../../store/cart/cart-action";
 
 function ProductCard(props: ProductInter) {
-  const { addItemToCart } = useContext(CartContext);
-
+  /*   const { addItemToCart } = useContext(CartContext); */
+  const cartItems = useSelector(selectCartItems);
+  const dispatch = useDispatch();
   return (
     <div className="product-card-container">
       <img src={props.imageUrl} alt={props.name} />
@@ -18,7 +21,7 @@ function ProductCard(props: ProductInter) {
       <Button
         properties={{ type: "button" }}
         onClick={() => {
-          addItemToCart(props);
+          dispatch(addItemToCart(cartItems, props));
         }}
         buttonType="inverted"
       >

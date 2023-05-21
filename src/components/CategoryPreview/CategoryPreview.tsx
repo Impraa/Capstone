@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { CategoryInter } from "../../contexts/CategoriesContext";
 import ProductCard from "../ProductCard/ProductCard";
 import "./CategoryPreview.scss";
+import { CategoryInter } from "../../store/categories/categories-reducer";
 
 function CategoryPreview({ title, items }: CategoryInter) {
   const newItems = Array.isArray(items)

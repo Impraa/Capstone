@@ -111,9 +111,6 @@ const INITAL_VALUE: CartContextInter = {
 
 const cartReducer = (state: CartContextInter, action: CartReducerAction) => {
   const { type, payload } = action; //Beacuse payload stores value of user
-
-  console.log(action);
-  console.log("dispatched");
   switch (type) {
     case CartActionType.SET_CART_ITEMS:
       return {

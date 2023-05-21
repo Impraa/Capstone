@@ -23,8 +23,6 @@ export const userReducer = (
   action: UserReducerAction
 ) => {
   const { type, payload } = action; //Beacuse payload stores value of user
-  console.log(action);
-  console.log("dispatched");
   switch (type) {
     case "SET_CURRENT_USER":
       return {

@@ -1,16 +1,44 @@
 import { compose, createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import thunk from "redux-thunk";
+
 import { rootReducer } from "./root-reducer";
 import { Dispatch, SetStateAction } from "react";
 import { User } from "firebase/auth";
-import { CategoryInter } from "./categories/categories-reducer";
+import { CategoryInter, ProductInter } from "./categories/categories-reducer";
 
-const middleWares = [logger];
+const middleWares = [
+  process.env.NODE_ENV === "development" && logger,
+  thunk,
+].filter(Boolean) as [];
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["cart"],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+/* 
+const composeEnhancer =
+  (process.env.NODE_ENV === "development" &&
+    window &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose; */
 
 const composedEnhancers = compose(applyMiddleware(...middleWares));
 
-export const store = createStore(rootReducer, undefined, composedEnhancers);
+export const store = createStore(
+  persistedReducer,
+  undefined,
+  composedEnhancers
+);
+
+export const persistor = persistStore(store);
 
 export type RootState = {
   user: {
@@ -19,5 +47,12 @@ export type RootState = {
   };
   categories: {
     categories: CategoryInter[];
+    isLoading: boolean;
+  };
+  cart: {
+    isOpened: boolean;
+    cartItems: ProductInter[];
+    cartCount: number;
+    cartTotal: number;
   };
 };
