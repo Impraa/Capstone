@@ -1,5 +1,5 @@
 import { createCategoriesAction } from "../../utils/Actions/CreateCategoriesAction";
-import { getCategoriesAndDocuments } from "../../utils/Firebase/firebase";
+import { IAction, createAction,/*  withMatcher  */} from "../../utils/Actions/GenericReducer";
 import { CategoryInter } from "./categories-reducer";
 import { CategoriesActionType } from "./categories-types";
 
@@ -10,12 +10,8 @@ import { CategoriesActionType } from "./categories-types";
   );
 }; */
 
-export const fetchCategoriesStart = () =>
-  createCategoriesAction(CategoriesActionType.FETCH_CATEGORIES_START, {
-    categories: [],
-    isLoading: true,
-    error: null,
-  });
+export const fetchCategoriesStart = /* withMatcher( */(): IAction<CategoriesActionType.FETCH_CATEGORIES_START> =>
+  createAction(CategoriesActionType.FETCH_CATEGORIES_START)/* ) */;
 
 export const fetchCategoriesSuccess = (categories: CategoryInter[]) =>
   createCategoriesAction(CategoriesActionType.FETCH_CATEGORIES_SUCCESS, {
@@ -30,6 +26,7 @@ export const fetchCategoriesFaliure = (error: Error) =>
     isLoading: false,
     error: error,
   });
+
 
 /* export const fetchCategoriesAsync = () => async (dispatch: any) => {
   dispatch(fetchCategoriesStart());

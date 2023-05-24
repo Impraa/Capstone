@@ -1,7 +1,7 @@
-import { compose, createStore, applyMiddleware } from "redux";
+import { compose, createStore, applyMiddleware, Middleware } from "redux";
 import logger from "redux-logger";
 
-import { persistReducer, persistStore } from "redux-persist";
+import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import thunk from "redux-thunk";
@@ -19,9 +19,13 @@ const middleWares = [
   process.env.NODE_ENV === "development" && logger,
   thunk,
   sagaMiddleware,
-].filter(Boolean) as [];
+].filter((middleware): middleware is Middleware => Boolean(middleware));
 
-const persistConfig = {
+/* type ExtendedPersistConfig = PersistConfig<RootState> & {
+  whitelist: (keyof RootState)[],
+} */
+
+const persistConfig/* : ExtendedPersistConfig */ = {
   key: "root",
   storage,
   whitelist: ["cart"],
@@ -63,3 +67,5 @@ export type RootState = {
     cartTotal: number;
   };
 };
+
+// export type RootState = ReturnType<typeof rootReducer>
