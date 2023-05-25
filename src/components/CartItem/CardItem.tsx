@@ -1,7 +1,8 @@
+import { FC, memo } from "react";
 import { ProductInter } from "../../store/categories/categories-reducer";
 import "./CardItem.scss";
 
-function CardItem(props: ProductInter) {
+const CardItem: FC<ProductInter> = memo((props: ProductInter) => {
   const { name, quantity, imageUrl, price } = props;
   return (
     <div className="cart-item-container">
@@ -14,6 +15,6 @@ function CardItem(props: ProductInter) {
       </div>
     </div>
   );
-}
+});
 
 export default CardItem;

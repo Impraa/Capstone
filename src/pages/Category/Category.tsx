@@ -10,8 +10,13 @@ import {
 import { ProductInter } from "../../store/categories/categories-reducer";
 import Spinner from "../../components/Spinner/Spinner";
 
+/* type CategoryRouteParams = {
+  category: string;
+}; */
+
 const Category = () => {
-  const { category } = useParams();
+  const { category } =
+    useParams /* <keyof CategoryRouteParams> */(); /* as CategoryRouteParams; */
   const categories = useSelector(selectCategories);
   const isLoading = useSelector(selectCategoriesIsLoading);
   const [products, setProducts] = useState([]);

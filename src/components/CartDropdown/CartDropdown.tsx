@@ -8,10 +8,15 @@ import {
 } from "./CartDropdown.styles";
 import { selectCartItems } from "../../store/cart/cart-selector";
 import { useSelector } from "react-redux";
+import { useCallback } from "react";
 function CartDropdown() {
   const cartItems = useSelector(selectCartItems);
 
   const navigate = useNavigate();
+
+  const goToCheckoutHandler = useCallback(() => {
+    navigate("/checkout");
+  }, []);
 
   return (
     <CartDropdownContainer>
@@ -25,9 +30,7 @@ function CartDropdown() {
       <Button
         properties={{ type: "button" }}
         buttonType="default"
-        onClick={() => {
-          navigate("/checkout");
-        }}
+        onClick={goToCheckoutHandler}
       >
         Go to checkout
       </Button>

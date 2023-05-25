@@ -1,7 +1,7 @@
 import { compose, createStore, applyMiddleware, Middleware } from "redux";
 import logger from "redux-logger";
 
-import { PersistConfig, persistReducer, persistStore } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import thunk from "redux-thunk";
@@ -25,7 +25,7 @@ const middleWares = [
   whitelist: (keyof RootState)[],
 } */
 
-const persistConfig/* : ExtendedPersistConfig */ = {
+const persistConfig /* : ExtendedPersistConfig */ = {
   key: "root",
   storage,
   whitelist: ["cart"],

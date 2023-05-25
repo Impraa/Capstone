@@ -10,7 +10,9 @@ export const selectorCategories = createSelector(
   (categories) => categories.categories
 );
 
-export interface ICategoryMap {[key:string]: ProductInter[]}
+export interface ICategoryMap {
+  [key: string]: ProductInter[];
+}
 
 export const selectCategories = createSelector(
   [selectorCategories],
@@ -20,7 +22,7 @@ export const selectCategories = createSelector(
           const { title, items } = categroy;
           acc[title.toLowerCase()] = items;
           return acc;
-        }, {} as ICategoryMap) 
+        }, {} as ICategoryMap)
       : [];
   }
 );

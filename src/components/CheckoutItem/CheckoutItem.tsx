@@ -7,8 +7,9 @@ import {
   removeItemFromCart,
 } from "../../store/cart/cart-action";
 import { selectCartItems } from "../../store/cart/cart-selector";
+import { FC, memo } from "react";
 
-function CheckoutItem(props: ProductInter) {
+const CheckoutItem: FC<ProductInter> = memo((props: ProductInter) => {
   const cartItems = useSelector(selectCartItems);
 
   const dispatch = useDispatch();
@@ -53,6 +54,6 @@ function CheckoutItem(props: ProductInter) {
       </div>
     </div>
   );
-}
+});
 
 export default CheckoutItem;
